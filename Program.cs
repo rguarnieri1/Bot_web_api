@@ -18,7 +18,14 @@ builder.Services.AddDbContext<BotDbContext>(options =>
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 builder.Services.AddOpenApi();
 
+// CORS: origini autorizzate a chiamare l'API dal browser (Cors:AllowedOrigins in appsettings.json).
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
+    policy.WithOrigins(allowedOrigins).WithMethods("GET").AllowAnyHeader()));
+
 var app = builder.Build();
+
+app.UseCors();
 
 app.MapOpenApi();
 
