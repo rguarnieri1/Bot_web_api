@@ -1,0 +1,14 @@
+# Build
+[Bb]in/
+[Oo]bj/
+publish/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Configurazione locale (stringa di connessione)
+appsettings.local.json

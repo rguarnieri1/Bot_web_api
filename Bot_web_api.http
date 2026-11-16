@@ -1,0 +1,13 @@
+@host = http://localhost:5252
+
+### Elenco di tutte le tabelle esposte
+GET {{host}}/api/tables
+
+### Righe di una tabella (paginate, più recenti per prime)
+GET {{host}}/api/bot1/bot1_trades?page=1&pageSize=50
+
+### Singola riga per chiave primaria
+GET {{host}}/api/bot1/bot1_cycles/1
+
+### Documento OpenAPI
+GET {{host}}/openapi/v1.json
