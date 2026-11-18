@@ -28,6 +28,14 @@ public partial class BotDbContext : DbContext
 
     public virtual DbSet<Bot11Trade> Bot11Trades { get; set; }
 
+    public virtual DbSet<Bot12Cycle> Bot12Cycles { get; set; }
+
+    public virtual DbSet<Bot12OperazioniChiuse> Bot12OperazioniChiuses { get; set; }
+
+    public virtual DbSet<Bot12Signal> Bot12Signals { get; set; }
+
+    public virtual DbSet<Bot12Trade> Bot12Trades { get; set; }
+
     public virtual DbSet<Bot1Cycle> Bot1Cycles { get; set; }
 
     public virtual DbSet<Bot1OperazioniChiuse> Bot1OperazioniChiuses { get; set; }
@@ -262,6 +270,117 @@ public partial class BotDbContext : DbContext
             entity.Property(e => e.Bot)
                 .HasMaxLength(50)
                 .HasDefaultValue("Bot 11", "DF_Trades_Bot");
+            entity.Property(e => e.EntryPrice).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.ExitPrice).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.ExitReason).HasMaxLength(100);
+            entity.Property(e => e.PositionSize).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Profit).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.ProfitPercentage).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Status).HasMaxLength(20);
+            entity.Property(e => e.StopLoss).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Strategy).HasMaxLength(200);
+            entity.Property(e => e.Symbol).HasMaxLength(50);
+            entity.Property(e => e.TargetPrice).HasColumnType("decimal(38, 18)");
+        });
+
+        modelBuilder.Entity<Bot12Cycle>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Cycles");
+
+            entity.ToTable("bot12_cycles", "bot12");
+
+            entity.HasIndex(e => e.StartTime, "IX_Cycles_StartTime");
+
+            entity.Property(e => e.Bot)
+                .HasMaxLength(50)
+                .HasDefaultValue("Bot 12", "DF_Cycles_Bot");
+            entity.Property(e => e.BtcRegime).HasMaxLength(20);
+            entity.Property(e => e.CapitalCommitted).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.RealizedPnl).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Timeframe).HasMaxLength(10);
+        });
+
+        modelBuilder.Entity<Bot12OperazioniChiuse>(entity =>
+        {
+            entity.ToTable("bot12_operazioni_chiuse", "bot12");
+
+            entity.HasIndex(e => e.CloseTime, "IX_bot12_operazioni_chiuse_CloseTime");
+
+            entity.HasIndex(e => e.TradeId, "UX_bot12_operazioni_chiuse_TradeId").IsUnique();
+
+            entity.Property(e => e.Bot)
+                .HasMaxLength(50)
+                .HasDefaultValue("Bot 12", "DF_bot12_operazioni_chiuse_Bot");
+            entity.Property(e => e.EntryPrice).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.ExitPrice).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.ExitReason).HasMaxLength(100);
+            entity.Property(e => e.Profit).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.ProfitPercentage).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Status).HasMaxLength(20);
+            entity.Property(e => e.StopLoss).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Strategy).HasMaxLength(200);
+            entity.Property(e => e.Symbol).HasMaxLength(50);
+            entity.Property(e => e.TargetPrice).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.TradeId).HasMaxLength(36);
+        });
+
+        modelBuilder.Entity<Bot12Signal>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Signals");
+
+            entity.ToTable("bot12_signals", "bot12");
+
+            entity.HasIndex(e => new { e.Symbol, e.SignalCandleTime }, "IX_Signals_Symbol_SignalCandleTime");
+
+            entity.Property(e => e.AvgVolume).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Bot)
+                .HasMaxLength(50)
+                .HasDefaultValue("Bot 12", "DF_Signals_Bot");
+            entity.Property(e => e.CandleBodyStrength).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Ema10)
+                .HasColumnType("decimal(38, 18)")
+                .HasColumnName("EMA10");
+            entity.Property(e => e.Ema20)
+                .HasColumnType("decimal(38, 18)")
+                .HasColumnName("EMA20");
+            entity.Property(e => e.Ema30)
+                .HasColumnType("decimal(38, 18)")
+                .HasColumnName("EMA30");
+            entity.Property(e => e.Ema5)
+                .HasColumnType("decimal(38, 18)")
+                .HasColumnName("EMA5");
+            entity.Property(e => e.ExpectedProfit).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.PositionSize).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Price).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.RejectionReason).HasMaxLength(100);
+            entity.Property(e => e.RiskRewardRatio).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Rsi)
+                .HasColumnType("decimal(38, 18)")
+                .HasColumnName("RSI");
+            entity.Property(e => e.Signal).HasMaxLength(200);
+            entity.Property(e => e.SignalStrength).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.StopLoss).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Strategy).HasMaxLength(200);
+            entity.Property(e => e.Symbol).HasMaxLength(50);
+            entity.Property(e => e.Target).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.Timeframe).HasMaxLength(10);
+            entity.Property(e => e.TradeId).HasMaxLength(36);
+            entity.Property(e => e.Volume).HasColumnType("decimal(38, 18)");
+            entity.Property(e => e.VolumeRatio).HasColumnType("decimal(38, 18)");
+        });
+
+        modelBuilder.Entity<Bot12Trade>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Trades");
+
+            entity.ToTable("bot12_trades", "bot12");
+
+            entity.HasIndex(e => new { e.Symbol, e.Status }, "IX_Trades_Symbol_Status");
+
+            entity.Property(e => e.Id).HasMaxLength(36);
+            entity.Property(e => e.Bot)
+                .HasMaxLength(50)
+                .HasDefaultValue("Bot 12", "DF_Trades_Bot");
             entity.Property(e => e.EntryPrice).HasColumnType("decimal(38, 18)");
             entity.Property(e => e.ExitPrice).HasColumnType("decimal(38, 18)");
             entity.Property(e => e.ExitReason).HasMaxLength(100);
