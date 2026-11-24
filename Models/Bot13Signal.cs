@@ -9,6 +9,8 @@ public partial class Bot13Signal
 
     public string Symbol { get; set; } = null!;
 
+    public string? Isin { get; set; }
+
     public string? Strategy { get; set; }
 
     public string? Signal { get; set; }

@@ -9,6 +9,8 @@ public partial class Bot11Trade
 
     public string? Symbol { get; set; }
 
+    public string? Isin { get; set; }
+
     public DateTime OpenTime { get; set; }
 
     public DateTime? CloseTime { get; set; }

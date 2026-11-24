@@ -11,6 +11,8 @@ public partial class Bot13OperazioniChiuse
 
     public string? Symbol { get; set; }
 
+    public string? Isin { get; set; }
+
     public string? Strategy { get; set; }
 
     public bool IsLong { get; set; }
